@@ -3,4 +3,4 @@ then
   mkdir build
 fi
 
-nasm -f bin main.asm -o build/main.bin
+nasm -f bin src/main.asm -i ./src -o build/main.bin
