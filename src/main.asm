@@ -14,14 +14,26 @@ call print
 mov dx, [0x9000 + 512] ; first word from second loaded sector, 0xface
 call print_hex
 
+call switch_to_pm
+
 jmp $
 
 %include "print_text.asm"
 %include "print_number.asm"
 %include "print_hex.asm"
 %include "load_disk.asm"
+%include "32bit/print.asm"
+%include "32bit/global_descript_table.asm"
+%include "32bit/switch.asm"
+
+[bits 32]
+BEGIN_PM: ; after the switch we will get here
+    mov ebx, welcomeMessage32
+    call print32 ; Note that this will be written at the top left corner
+    jmp $
 
 welcomeMessage: db 'Welcome to MarkOS!', 10, 0x0D, 0
+welcomeMessage32: db 'Welcome to MarkOS 32bit!', 0
 times 510-($-$$) db 0
 dw 0xaa55
 
